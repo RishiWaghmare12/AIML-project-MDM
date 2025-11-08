@@ -1,0 +1,15 @@
+[project]
+name = "sem5"
+version = "0.1.0"
+description = "Heart Disease Prediction Model"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scikit-learn==1.6.1",
+    "streamlit",
+    "joblib",
+    "matplotlib",
+    "seaborn",
+    "jupyterlab",
+]
