@@ -1,4 +1,4 @@
-# Heart Disease Prediction Project
+# Customer Churn Prediction Project
 
 **Team Members:**
 - Aditya Kotkar (PRN: 202301040009)
@@ -10,33 +10,33 @@
 
 ## 1. Project Overview
 
-This project aims to build and evaluate a series of machine learning models to predict the presence of heart disease in a patient.
+This project aims to build and evaluate a series of machine learning models to predict customer churn in a telecommunications company.
 
-The workflow involves loading and cleaning the `heart.csv` dataset, performing exploratory data analysis, and engineering a new "Patient Profile" feature using K-Means clustering.
+The workflow involves loading and cleaning the Telco Customer Churn dataset, performing exploratory data analysis, and engineering a new "Customer Segment" feature using K-Means clustering.
 
-Several base classification models (like KNN, SVM, and Logistic Regression) are trained and evaluated. Their performance is then improved by implementing advanced ensemble models (Voting, AdaBoost, and Stacking). Finally, the best-performing model, the AdaBoost Ensemble, is saved and deployed as an interactive web application using Streamlit.
+Several base classification models (like KNN, SVM, and Logistic Regression) are trained and evaluated. Their performance is then improved by implementing advanced ensemble models (Voting, AdaBoost, and Stacking). Finally, the best-performing model is saved and deployed as an interactive web application using Streamlit.
 
 ## 2. Project Structure
 
 ```
 AIML-project-MDM/
-├── aiml_pr7.ipynb              # JupyterLab notebook with full ML pipeline
-├── heart.csv                   # Dataset (303 patient records)
-├── app.py                      # Streamlit web application
-├── pyproject.toml              # Project configuration and dependencies
-├── uv.lock                     # Locked dependency versions
-├── .gitignore                  # Git ignore rules
-├── LICENSE.md                  # MIT License
-└── README.md                   # This file
+├── aiml_pr7.ipynb                           # JupyterLab notebook with full ML pipeline
+├── WA_Fn-UseC_-Telco-Customer-Churn.csv     # Dataset (7043 customer records)
+├── app.py                                   # Streamlit web application
+├── pyproject.toml                           # Project configuration and dependencies
+├── uv.lock                                  # Locked dependency versions
+├── .gitignore                               # Git ignore rules
+├── LICENSE.md                               # MIT License
+└── README.md                                # This file
 ```
 
 ### Generated Files (not in repository)
 
 These files are created when you run the notebook:
 
-- `heart_disease_model.pkl`: Trained AdaBoost ensemble model
-- `heart_disease_scaler.pkl`: Fitted StandardScaler for feature preprocessing
-- `kmeans_model.pkl`: Trained K-Means clustering model for Patient_Profile feature
+- `churn_model.pkl`: Trained AdaBoost ensemble model
+- `churn_scaler.pkl`: Fitted StandardScaler for feature preprocessing
+- `kmeans_model.pkl`: Trained K-Means clustering model for Customer_Segment feature
 - `kmeans_scaler.pkl`: Fitted StandardScaler for K-Means clustering
 - `.venv/`: Virtual environment (created by `uv sync`)
 - `.ipynb_checkpoints/`: JupyterLab checkpoint files
@@ -93,8 +93,8 @@ This will open JupyterLab in your browser with the notebook already loaded.
 - Perform data analysis and feature engineering
 - Train all models and compare their performance
 - Generate 4 pickle files:
-  - `heart_disease_model.pkl` (AdaBoost model)
-  - `heart_disease_scaler.pkl` (feature scaler)
+  - `churn_model.pkl` (AdaBoost model)
+  - `churn_scaler.pkl` (feature scaler)
   - `kmeans_model.pkl` (K-Means clustering model)
   - `kmeans_scaler.pkl` (clustering scaler)
 
@@ -104,27 +104,27 @@ Once you've finished running all cells, close JupyterLab by pressing `Ctrl+C` in
 
 ### Step 2: Run the Streamlit Web App
 
-Once the model files are generated and JupyterLab is closed, launch the interactive prediction application:
+Once the model files are generated and JupyterLab is closed, launch the interactive churn prediction application:
 
 ```bash
 uv run streamlit run app.py
 ```
 
-Your web browser will automatically open to `http://localhost:8501` with the prediction interface.
+Your web browser will automatically open to `http://localhost:8501` with the customer churn prediction interface.
 
 ## 5. Model Performance
 
-The AdaBoost Ensemble was the clear top performer, achieving the highest accuracy and F1-Score.
+Logistic Regression was the top performer, achieving the highest F1-Score. This demonstrates that simpler models can outperform complex ensembles when the problem is largely linear.
 
 | Model                  | Accuracy | F1-Score |
 |------------------------|----------|----------|
-| AdaBoost Ensemble      | 0.8852   | 0.8727   |
-| Stacking Ensemble      | 0.8689   | 0.8571   |
-| K-Nearest Neighbors    | 0.8688   | 0.8519   |
-| Voting Ensemble        | 0.8525   | 0.8364   |
-| Logistic Regression    | 0.8361   | 0.8214   |
-| Support Vector Machine | 0.8361   | 0.8077   |
-| Decision Tree          | 0.6393   | 0.6207   |
+| Logistic Regression    | 0.8053   | 0.6108   |
+| Stacking Ensemble      | 0.8031   | 0.6037   |
+| AdaBoost Ensemble      | 0.7982   | 0.5896   |
+| Support Vector Machine | 0.7889   | 0.5561   |
+| Voting Ensemble        | 0.7868   | 0.5522   |
+| K-Nearest Neighbors    | 0.7598   | 0.5469   |
+| Decision Tree          | 0.7221   | 0.5082   |
 
 ## 6. Technologies Used
 
@@ -140,36 +140,50 @@ The AdaBoost Ensemble was the clear top performer, achieving the highest accurac
 
 ### JupyterLab Notebook (`aiml_pr7.ipynb`)
 - Exploratory Data Analysis (EDA) with visualizations
-- K-Means clustering for feature engineering (Patient Profile)
+- K-Means clustering for feature engineering (Customer Segment)
 - Training and evaluation of 7 different models
 - Model comparison and performance metrics
 - Saves best model (AdaBoost) and scaler as pickle files
 
 ### Streamlit Web App (`app.py`)
-- Interactive user interface for predictions
-- Real-time heart disease risk assessment
+- Interactive user interface for churn predictions
+- Real-time customer churn risk assessment
 - Input validation and preprocessing
-- Probability scores for predictions
+- Probability scores for churn predictions
 - Clean, responsive design
 
 ## 8. Dataset
 
-The `heart.csv` dataset contains 303 patient records with 14 attributes:
+The Telco Customer Churn dataset contains 7,043 customer records with 21 attributes:
 
-- **Age**: Patient age in years
-- **Sex**: Gender (1 = male, 0 = female)
-- **ChestPain**: Type of chest pain (typical, asymptomatic, nonanginal, nontypical)
-- **RestBP**: Resting blood pressure (mm Hg)
-- **Chol**: Serum cholesterol (mg/dl)
-- **Fbs**: Fasting blood sugar > 120 mg/dl (1 = true, 0 = false)
-- **RestECG**: Resting electrocardiographic results (0, 1, 2)
-- **MaxHR**: Maximum heart rate achieved
-- **ExAng**: Exercise induced angina (1 = yes, 0 = no)
-- **Oldpeak**: ST depression induced by exercise
-- **Slope**: Slope of peak exercise ST segment (1, 2, 3)
-- **Ca**: Number of major vessels colored by fluoroscopy (0-3)
-- **Thal**: Thalassemia (normal, fixed, reversable)
-- **Target**: Heart disease diagnosis (1 = disease, 0 = no disease)
+**Customer Demographics:**
+- **customerID**: Unique customer identifier
+- **gender**: Customer gender (Male/Female)
+- **SeniorCitizen**: Whether customer is a senior citizen (1 = yes, 0 = no)
+- **Partner**: Whether customer has a partner (Yes/No)
+- **Dependents**: Whether customer has dependents (Yes/No)
+
+**Services:**
+- **tenure**: Number of months the customer has stayed with the company
+- **PhoneService**: Whether customer has phone service (Yes/No)
+- **MultipleLines**: Whether customer has multiple lines (Yes/No/No phone service)
+- **InternetService**: Type of internet service (DSL/Fiber optic/No)
+- **OnlineSecurity**: Whether customer has online security (Yes/No/No internet service)
+- **OnlineBackup**: Whether customer has online backup (Yes/No/No internet service)
+- **DeviceProtection**: Whether customer has device protection (Yes/No/No internet service)
+- **TechSupport**: Whether customer has tech support (Yes/No/No internet service)
+- **StreamingTV**: Whether customer has streaming TV (Yes/No/No internet service)
+- **StreamingMovies**: Whether customer has streaming movies (Yes/No/No internet service)
+
+**Account Information:**
+- **Contract**: Contract term (Month-to-month/One year/Two year)
+- **PaperlessBilling**: Whether customer has paperless billing (Yes/No)
+- **PaymentMethod**: Payment method (Electronic check/Mailed check/Bank transfer/Credit card)
+- **MonthlyCharges**: Monthly charge amount
+- **TotalCharges**: Total amount charged to the customer
+
+**Target:**
+- **Churn**: Whether the customer churned (Yes/No)
 
 ## 9. License
 

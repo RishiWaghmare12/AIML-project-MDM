@@ -37,7 +37,7 @@ This project was created as part of the AIML (Artificial Intelligence and Machin
 
 ## Dataset Attribution
 
-The heart disease dataset (`heart.csv`) used in this project is publicly available and commonly used for educational and research purposes in machine learning.
+The Telco Customer Churn dataset (`WA_Fn-UseC_-Telco-Customer-Churn.csv`) used in this project is publicly available from Kaggle and commonly used for educational and research purposes in machine learning.
 
 ## Third-Party Libraries
 
