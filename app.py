@@ -37,7 +37,8 @@ feature_names = [
 # --- 3. Build the Streamlit Interface ---
 st.set_page_config(page_title="Customer Churn Predictor", layout="wide")
 st.title('📞 Customer Churn Prediction Model')
-st.caption("Machine Learning model for telecom customer churn risk assessment")
+st.caption("Stacking Ensemble ML model for telecom customer churn risk assessment")
+st.info("🎯 **Model:** Stacking Ensemble (Best Performer) | **Accuracy:** 81.42% | **F1-Score:** 0.6245")
 
 st.subheader("Customer Information")
 
@@ -195,3 +196,13 @@ if st.button("Predict Churn Risk", type="primary", use_container_width=True):
     else:
         st.success(f"**Result: Customer Will Likely Stay** (Probability: {prediction_proba[0][0]*100:.2f}%)")
         st.write("✅ This customer has a low risk of churning. Continue providing excellent service.")
+
+# --- Footer with Paper Reference ---
+st.divider()
+st.markdown("""
+<div style='text-align: center; color: #666; font-size: 0.9em;'>
+    <p><strong>Based on Research Paper:</strong> "Prediction of Customer Churn Using Machine Learning"<br>
+    Yash Singh et al. (2022) | IRJMETS | <a href='https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf' target='_blank'>View Paper</a></p>
+    <p><strong>Team:</strong> Aditya Kotkar, Krishna Tolani, Rishi Waghmare | MIT Academy of Engineering, Alandi, Pune</p>
+</div>
+""", unsafe_allow_html=True)
