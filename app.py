@@ -3,42 +3,29 @@ import pandas as pd
 import numpy as np
 import joblib
 
-# --- 1. Load ALL Models and Scalers ---
+# --- 1. Load Model and Scaler ---
 try:
     model = joblib.load('churn_model.pkl')
     scaler = joblib.load('churn_scaler.pkl')
-    kmeans_model = joblib.load('kmeans_model.pkl')
-    kmeans_scaler = joblib.load('kmeans_scaler.pkl')
 except FileNotFoundError as e:
-    st.error(f"Missing file: {e.filename}")
-    st.error("Please run the Jupyter notebook to generate all required .pkl files.")
-    st.stop()
-except Exception as e:
-    st.error(f"Error loading models: {e}")
+    st.error(f"Missing file: {e.filename}. Please run the Jupyter notebook first to generate the model files.")
     st.stop()
 
 # --- 2. Define Feature Names (must match notebook exactly) ---
 feature_names = [
-    'SeniorCitizen', 'tenure', 'MonthlyCharges', 'TotalCharges',
-    'gender_Male', 'Partner_Yes', 'Dependents_Yes', 'PhoneService_Yes',
-    'MultipleLines_No phone service', 'MultipleLines_Yes',
-    'InternetService_Fiber optic', 'InternetService_No',
-    'OnlineSecurity_No internet service', 'OnlineSecurity_Yes',
-    'OnlineBackup_No internet service', 'OnlineBackup_Yes',
-    'DeviceProtection_No internet service', 'DeviceProtection_Yes',
-    'TechSupport_No internet service', 'TechSupport_Yes',
-    'StreamingTV_No internet service', 'StreamingTV_Yes',
-    'StreamingMovies_No internet service', 'StreamingMovies_Yes',
-    'Contract_One year', 'Contract_Two year', 'PaperlessBilling_Yes',
+    'SeniorCitizen', 'tenure', 'MonthlyCharges', 'gender_Male', 'Partner_Yes', 
+    'Dependents_Yes', 'PhoneService_Yes', 'MultipleLines_Yes', 
+    'InternetService_Fiber optic', 'InternetService_No', 'OnlineSecurity_Yes', 
+    'OnlineBackup_Yes', 'DeviceProtection_Yes', 'TechSupport_Yes', 
+    'StreamingTV_Yes', 'StreamingMovies_Yes', 'Contract_One year', 
+    'Contract_Two year', 'PaperlessBilling_Yes', 
     'PaymentMethod_Credit card (automatic)', 'PaymentMethod_Electronic check',
-    'PaymentMethod_Mailed check', 'Customer_Segment'
+    'PaymentMethod_Mailed check'
 ]
 
 # --- 3. Build the Streamlit Interface ---
 st.set_page_config(page_title="Customer Churn Predictor", layout="wide")
 st.title('📞 Customer Churn Prediction Model')
-st.caption("Stacking Ensemble ML model for telecom customer churn risk assessment")
-st.info("🎯 **Model:** Stacking Ensemble (Best Performer) | **Accuracy:** 81.42% | **F1-Score:** 0.6245")
 
 st.subheader("Customer Information")
 
@@ -84,7 +71,6 @@ with col7:
 
 with col8:
     monthly_charges = st.slider("Monthly Charges ($)", 18.0, 120.0, 65.0)
-    total_charges = st.number_input("Total Charges ($)", 0.0, 9000.0, float(monthly_charges * tenure))
 
 # --- 4. Prediction Button ---
 if st.button("Predict Churn Risk", type="primary", use_container_width=True):
@@ -96,7 +82,6 @@ if st.button("Predict Churn Risk", type="primary", use_container_width=True):
     input_data['SeniorCitizen'] = 1 if senior_citizen == "Yes" else 0
     input_data['tenure'] = tenure
     input_data['MonthlyCharges'] = monthly_charges
-    input_data['TotalCharges'] = total_charges
     
     # Set boolean features (one-hot encoded)
     if gender == "Male":
@@ -108,65 +93,35 @@ if st.button("Predict Churn Risk", type="primary", use_container_width=True):
     if phone_service == "Yes":
         input_data['PhoneService_Yes'] = 1
     
-    # MultipleLines
-    if multiple_lines == "No phone service":
-        input_data['MultipleLines_No phone service'] = 1
-    elif multiple_lines == "Yes":
+    if multiple_lines == "Yes":
         input_data['MultipleLines_Yes'] = 1
     
-    # InternetService
     if internet_service == "Fiber optic":
         input_data['InternetService_Fiber optic'] = 1
     elif internet_service == "No":
         input_data['InternetService_No'] = 1
     
-    # OnlineSecurity
-    if online_security == "No internet service":
-        input_data['OnlineSecurity_No internet service'] = 1
-    elif online_security == "Yes":
+    if online_security == "Yes":
         input_data['OnlineSecurity_Yes'] = 1
-    
-    # OnlineBackup
-    if online_backup == "No internet service":
-        input_data['OnlineBackup_No internet service'] = 1
-    elif online_backup == "Yes":
+    if online_backup == "Yes":
         input_data['OnlineBackup_Yes'] = 1
-    
-    # DeviceProtection
-    if device_protection == "No internet service":
-        input_data['DeviceProtection_No internet service'] = 1
-    elif device_protection == "Yes":
+    if device_protection == "Yes":
         input_data['DeviceProtection_Yes'] = 1
-    
-    # TechSupport
-    if tech_support == "No internet service":
-        input_data['TechSupport_No internet service'] = 1
-    elif tech_support == "Yes":
+    if tech_support == "Yes":
         input_data['TechSupport_Yes'] = 1
-    
-    # StreamingTV
-    if streaming_tv == "No internet service":
-        input_data['StreamingTV_No internet service'] = 1
-    elif streaming_tv == "Yes":
+    if streaming_tv == "Yes":
         input_data['StreamingTV_Yes'] = 1
-    
-    # StreamingMovies
-    if streaming_movies == "No internet service":
-        input_data['StreamingMovies_No internet service'] = 1
-    elif streaming_movies == "Yes":
+    if streaming_movies == "Yes":
         input_data['StreamingMovies_Yes'] = 1
     
-    # Contract
     if contract == "One year":
         input_data['Contract_One year'] = 1
     elif contract == "Two year":
         input_data['Contract_Two year'] = 1
     
-    # PaperlessBilling
     if paperless_billing == "Yes":
         input_data['PaperlessBilling_Yes'] = 1
     
-    # PaymentMethod
     if payment_method == "Credit card (automatic)":
         input_data['PaymentMethod_Credit card (automatic)'] = 1
     elif payment_method == "Electronic check":
@@ -174,20 +129,15 @@ if st.button("Predict Churn Risk", type="primary", use_container_width=True):
     elif payment_method == "Mailed check":
         input_data['PaymentMethod_Mailed check'] = 1
     
-    # Generate Customer_Segment using pre-trained K-Means model
-    cluster_input = pd.DataFrame([[tenure, monthly_charges, total_charges]], 
-                                  columns=['tenure', 'MonthlyCharges', 'TotalCharges'])
-    cluster_input_scaled = kmeans_scaler.transform(cluster_input)
-    customer_segment = kmeans_model.predict(cluster_input_scaled)[0]
-    input_data['Customer_Segment'] = customer_segment
-    
-    # Convert to DataFrame and apply scaling
     input_df = pd.DataFrame([input_data], columns=feature_names)
     input_scaled = scaler.transform(input_df)
     
+    # Convert back to DataFrame to preserve feature names and avoid warnings
+    input_scaled_df = pd.DataFrame(input_scaled, columns=feature_names)
+    
     # Make Prediction
-    prediction = model.predict(input_scaled)
-    prediction_proba = model.predict_proba(input_scaled)
+    prediction = model.predict(input_scaled_df)
+    prediction_proba = model.predict_proba(input_scaled_df)
     
     # Display Results
     if prediction[0] == 1:
@@ -196,13 +146,3 @@ if st.button("Predict Churn Risk", type="primary", use_container_width=True):
     else:
         st.success(f"**Result: Customer Will Likely Stay** (Probability: {prediction_proba[0][0]*100:.2f}%)")
         st.write("✅ This customer has a low risk of churning. Continue providing excellent service.")
-
-# --- Footer with Paper Reference ---
-st.divider()
-st.markdown("""
-<div style='text-align: center; color: #666; font-size: 0.9em;'>
-    <p><strong>Based on Research Paper:</strong> "Prediction of Customer Churn Using Machine Learning"<br>
-    Yash Singh et al. (2022) | IRJMETS | <a href='https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf' target='_blank'>View Paper</a></p>
-    <p><strong>Team:</strong> Aditya Kotkar, Krishna Tolani, Rishi Waghmare | MIT Academy of Engineering, Alandi, Pune</p>
-</div>
-""", unsafe_allow_html=True)

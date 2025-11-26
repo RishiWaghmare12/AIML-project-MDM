@@ -10,13 +10,11 @@
 
 ## 1. Project Overview
 
-This project aims to build and evaluate a series of machine learning models to predict customer churn in a telecommunications company, following the methodology from the research paper **"Prediction of Customer Churn Using Machine Learning"** by Yash Singh et al. (2022), published in the International Research Journal of Modernization in Engineering Technology and Science (IRJMETS).
+This project aims to build and evaluate a series of machine learning models to predict customer churn in a telecommunications company.
 
-**Paper Reference:** [https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf](https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf)
+The workflow involves loading and cleaning the Telco Customer Churn dataset, performing exploratory data analysis, and feature engineering through data preprocessing.
 
-The workflow involves loading and cleaning the Telco Customer Churn dataset, performing exploratory data analysis, and engineering a new "Customer Segment" feature using K-Means clustering.
-
-Several base classification models (including Naive Bayes, KNN, SVM, Decision Tree, and Logistic Regression) are trained and evaluated. Their performance is then improved by implementing advanced ensemble models (Voting, AdaBoost, and Stacking). Finally, the best-performing model (Stacking Ensemble) is saved and deployed as an interactive web application using Streamlit.
+Several base classification models (including Naive Bayes, KNN, SVM, Decision Tree, and Logistic Regression) are trained and evaluated. Their performance is then improved by implementing advanced ensemble models (Voting, AdaBoost, and Stacking). Finally, the best-performing model (Voting Ensemble) is saved and deployed as an interactive web application using Streamlit.
 
 ## 2. Project Structure
 
@@ -36,10 +34,8 @@ AIML-project-MDM/
 
 These files are created when you run the notebook:
 
-- `churn_model.pkl`: Trained Stacking Ensemble model (best performing)
+- `churn_model.pkl`: Trained Voting Ensemble model (best F1-Score)
 - `churn_scaler.pkl`: Fitted StandardScaler for feature preprocessing
-- `kmeans_model.pkl`: Trained K-Means clustering model for Customer_Segment feature
-- `kmeans_scaler.pkl`: Fitted StandardScaler for K-Means clustering
 - `.venv/`: Virtual environment (created by `uv sync`)
 - `.ipynb_checkpoints/`: JupyterLab checkpoint files
 
@@ -94,11 +90,9 @@ This will open JupyterLab in your browser with the notebook already loaded.
 **Important:** Run all cells in the notebook to:
 - Perform data analysis and feature engineering
 - Train all models (including Naive Bayes) and compare their performance
-- Generate 4 pickle files:
-  - `churn_model.pkl` (Stacking Ensemble model - best performer)
+- Generate 2 pickle files:
+  - `churn_model.pkl` (Voting Ensemble model - best F1-Score)
   - `churn_scaler.pkl` (feature scaler)
-  - `kmeans_model.pkl` (K-Means clustering model)
-  - `kmeans_scaler.pkl` (clustering scaler)
 
 These files are required for the Streamlit app to work.
 
@@ -116,23 +110,24 @@ Your web browser will automatically open to `http://localhost:8501` with the cus
 
 ## 5. Model Performance
 
-The **Stacking Ensemble** achieved the best overall performance, demonstrating the power of combining multiple models. This aligns with the findings from the research paper by Yash Singh et al. (2022), which emphasizes the effectiveness of ensemble methods for churn prediction.
+The **Voting Ensemble** achieved the best F1-Score, making it ideal for churn prediction where identifying churning customers (minimizing false negatives) is critical.
 
-| Model                  | Accuracy | F1-Score |
+| Model                  | F1-Score | Accuracy |
 |------------------------|----------|----------|
-| Stacking Ensemble      | 0.8142   | 0.6245   |
-| Logistic Regression    | 0.8053   | 0.6108   |
-| AdaBoost Ensemble      | 0.7982   | 0.5896   |
-| Support Vector Machine | 0.7889   | 0.5561   |
-| Voting Ensemble        | 0.7868   | 0.5522   |
-| Naive Bayes            | 0.7654   | 0.5512   |
-| K-Nearest Neighbors    | 0.7598   | 0.5469   |
-| Decision Tree          | 0.7221   | 0.5082   |
+| Voting Ensemble        | 0.6164   | 0.7868   |
+| Logistic Regression    | 0.6080   | 0.8038   |
+| Stacking Ensemble      | 0.6011   | 0.8010   |
+| Naive Bayes            | 0.5994   | 0.7321   |
+| AdaBoost Ensemble      | 0.5685   | 0.7939   |
+| Support Vector Machine | 0.5605   | 0.7882   |
+| K-Nearest Neighbors    | 0.5260   | 0.7477   |
+| Decision Tree          | 0.5032   | 0.7207   |
 
 **Key Findings:**
-- Stacking Ensemble outperforms all individual models and other ensemble methods
-- The combination of diverse base learners (Logistic Regression, KNN, Decision Tree, SVM) with a meta-learner provides superior predictive power
-- Naive Bayes provides competitive performance with fast training time
+- Voting Ensemble achieves the highest F1-Score (0.6164), providing the best balance between precision and recall
+- While Logistic Regression has slightly higher accuracy (0.8038), the Voting Ensemble better identifies churning customers
+- F1-Score is prioritized over accuracy due to class imbalance in the dataset (73% non-churn vs 27% churn)
+- Ensemble methods generally outperform individual models, demonstrating the power of combining diverse classifiers
 
 ## 6. Technologies Used
 
@@ -148,11 +143,11 @@ The **Stacking Ensemble** achieved the best overall performance, demonstrating t
 
 ### JupyterLab Notebook (`aiml_pr7.ipynb`)
 - Exploratory Data Analysis (EDA) with visualizations
-- K-Means clustering for feature engineering (Customer Segment)
+- Data preprocessing and feature engineering
 - Training and evaluation of 8 different models
 - Implementation of ensemble methods (Voting, AdaBoost, Stacking)
 - Model comparison and performance metrics
-- Saves best model (Stacking Ensemble) and scaler as pickle files
+- Saves best model (Voting Ensemble) and scaler as pickle files
 
 ### Streamlit Web App (`app.py`)
 - Interactive user interface for churn predictions
@@ -194,31 +189,6 @@ The Telco Customer Churn dataset contains 7,043 customer records with 21 attribu
 **Target:**
 - **Churn**: Whether the customer churned (Yes/No)
 
-## 9. Research Paper Reference
-
-This project follows the methodology outlined in:
-
-**"Prediction of Customer Churn Using Machine Learning"**  
-Authors: Yash Singh, Yash Pandit, Neil Joshi, Prof. Vedika Avhad  
-Published in: International Research Journal of Modernization in Engineering Technology and Science (IRJMETS)  
-Volume: 04, Issue: 04, April 2022  
-e-ISSN: 2582-5208  
-Impact Factor: 6.752
-
-**Paper Link:** [https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf](https://www.academia.edu/download/105452759/fin_irjmets1649599690.pdf)
-
-The paper emphasizes the importance of:
-- Using multiple machine learning algorithms for comparison
-- Implementing ensemble methods for improved accuracy
-- Feature engineering through clustering techniques
-- Comprehensive evaluation metrics (Accuracy, F1-Score, Confusion Matrix)
-
-Our implementation extends the paper's approach by:
-- Adding K-Means clustering for customer segmentation
-- Implementing Stacking Ensemble as the meta-learner
-- Creating an interactive web application for real-time predictions
-- Achieving superior performance through advanced ensemble techniques
-
-## 10. License
+## 9. License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
